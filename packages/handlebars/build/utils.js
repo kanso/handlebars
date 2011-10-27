@@ -12,13 +12,15 @@ exports.registerTemplates = function (dir, doc, p, callback) {
     if (!doc._handlebars.templates) {
         doc._handlebars.templates = {};
     }
+    var p = utils.abspath(p, dir);
     exports.find(p, function (err, files) {
         if (err) {
             return callback(err);
         }
         _.each(files, function (file) {
             var rel = utils.relpath(file, p);
-            doc._handlebars.templates[rel] = file;
+            var abs = utils.abspath(file, p);
+            doc._handlebars.templates[rel] = abs;
         });
         callback(null, doc);
     });
