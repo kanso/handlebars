@@ -48,16 +48,24 @@ exports.addTemplates = function (doc, templates, callback) {
             }
             var src = content.toString();
             src = src.replace(/\.handlebars$/, '');
-            doc.handlebars += '\n(function() {\n' +
-                '  var template = Handlebars.template, ' +
-                'templates = Handlebars.templates = Handlebars.templates || {};\n' +
-                'templates["' + exports.safestr(k) +
-                '"] = template(' +
-                handlebars.precompile(src, {
-                    knownHelpers: {},
-                    knownHelpersOnly: false
-                }) + ');\n' +
-                '})();\n'
+            try {
+                doc.handlebars += '\n(function() {\n' +
+                    '  var template = Handlebars.template, ' +
+                    'templates = Handlebars.templates = Handlebars.templates || {};\n' +
+                    'templates["' + exports.safestr(k) +
+                    '"] = template(' +
+                    handlebars.precompile(src, {
+                        knownHelpers: {},
+                        knownHelpersOnly: false
+                    }) + ');\n' +
+                    '})();\n'
+            }
+            catch (e) {
+                return cb(new Error(
+                    'Error compiling handlebars template: ' + k + '\n' +
+                    e.message
+                ));
+            }
             cb();
         });
     }, callback);
