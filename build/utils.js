@@ -1,8 +1,8 @@
 var async = require('async'),
-    utils = require('kanso/utils'),
-    handlebars = require('../handlebars/lib/handlebars'),
+    utils = require('kanso-utils/utils'),
+    handlebars = require('handlebars'),
     fs = require('fs'),
-    _ = require('underscore/underscore')._;
+    _ = require('underscore')._;
 
 
 exports.registerTemplates = function (dir, doc, p, callback) {
@@ -28,15 +28,6 @@ exports.registerTemplates = function (dir, doc, p, callback) {
 
 exports.safestr = function (str) {
     return str.replace(/"/g, '\\"').replace(/\n/g, '\\n');
-};
-
-exports.addTemplatePartials = function (doc, templates) {
-    _.each(_.keys(templates || {}), function (k) {
-        doc.handlebars += '\nHandlebars.registerPartial("' +
-            exports.safestr(k) + '", ' +
-            'Handlebars.templates["' + exports.safestr(k) + '"]' +
-        ');\n';
-    });
 };
 
 exports.addTemplates = function (doc, templates, callback) {

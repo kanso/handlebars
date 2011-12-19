@@ -15,9 +15,6 @@ module.exports = {
                 if (err) {
                     return callback(err);
                 }
-                if (settings.handlebars.all_partials) {
-                    utils.addTemplatePartials(doc, doc._handlebars.templates);
-                }
                 delete doc._handlebars;
                 callback(err, doc);
             });
